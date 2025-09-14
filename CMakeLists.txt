@@ -24,3 +24,5 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
 add_subdirectory("${PROJECT_SOURCE_DIR}/apps")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# set c++ standard  to 20
+set(CMAKE_CXX_STANDARD 20)

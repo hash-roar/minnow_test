@@ -1,3 +1,4 @@
+#include "address.hh"
 #include "socket.hh"
 
 #include <cstdlib>
@@ -9,8 +10,31 @@ using namespace std;
 
 void get_URL( const string& host, const string& path )
 {
-  cerr << "Function called: get_URL(" << host << ", " << path << ")\n";
-  cerr << "Warning: get_URL() has not been implemented yet.\n";
+  // Create a TCP socket
+  TCPSocket socket;
+  
+  // Create an address for the host on port 80 (HTTP default port)
+  Address address( host, "80" );
+  
+  // Connect to the server
+  socket.connect( address );
+  
+  // Construct the HTTP GET request
+  string request = "GET " + path + " HTTP/1.1\r\n";
+  request += "Host: " + host + "\r\n";
+  request += "Connection: close\r\n";
+  request += "\r\n";
+  
+  // Send the HTTP request
+  socket.write( request );
+  
+  // Read the response until EOF
+  string response;
+  while ( !socket.eof() ) {
+    socket.read( response );
+    cout << response;
+    response.clear();
+  }
 }
 
 int main( int argc, char* argv[] )
