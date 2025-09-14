@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <vector>
 
 class Reader;
 class Writer;
@@ -13,7 +14,12 @@ class ByteStream
 protected:
   uint64_t capacity_;
   // Please add any additional state to the ByteStream here, and not to the Writer and Reader interfaces.
-  std::string buffer_;
+  // std::string buffer_;
+  std::vector<char> buffer_;
+  uint64_t head_{0};  // Index of first byte to read
+  uint64_t size_{0};  // Number of bytes currently in buffer
+
+
   bool closed_{false};
   bool error_{false};
   uint64_t bytes_pushed_{0};
