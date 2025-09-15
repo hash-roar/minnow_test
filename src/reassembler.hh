@@ -2,10 +2,24 @@
 
 #include "byte_stream.hh"
 
+#include <map>
 #include <string>
 
 class Reassembler
 {
+private:
+  // Store unassembled substrings, indexed by their starting position
+  std::map<uint64_t, std::string> unassembled_substrings_;
+  
+  // The index of the next byte we expect to write to the stream
+  uint64_t next_expected_index_ = 0;
+  
+  // Whether we've seen the last substring (stream should be closed when all data is written)
+  bool is_last_substring_received_ = false;
+  
+  // The index where the stream should end (only valid if is_last_substring_received_ is true)
+  uint64_t stream_end_index_ = 0;
+
 public:
   /*
    * Insert a new substring to be reassembled into a ByteStream.
