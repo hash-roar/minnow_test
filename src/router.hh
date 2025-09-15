@@ -52,8 +52,22 @@ public:
 // performs longest-prefix-match routing between them.
 class Router
 {
+  // Route entry for the routing table
+  struct RouteEntry {
+    uint32_t route_prefix;
+    uint8_t prefix_length;
+    std::optional<Address> next_hop;
+    size_t interface_num;
+    
+    RouteEntry(uint32_t prefix, uint8_t length, std::optional<Address> hop, size_t interface)
+      : route_prefix(prefix), prefix_length(length), next_hop(hop), interface_num(interface) {}
+  };
+
   // The router's collection of network interfaces
   std::vector<AsyncNetworkInterface> interfaces_ {};
+  
+  // The routing table
+  std::vector<RouteEntry> routing_table_ {};
 
 public:
   // Add an interface to the router
