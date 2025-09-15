@@ -42,7 +42,7 @@ TCPReceiverMessage TCPReceiver::send( const Writer& inbound_stream ) const
   if ( isn_.has_value() ) {
     // The ackno is the next sequence number we need
     // This is ISN + 1 (for SYN) + bytes_pushed (for data) + (1 if stream is closed, for FIN)
-    uint64_t next_abs_seqno = isn_.value().unwrap( isn_.value(), inbound_stream.bytes_pushed() ) + 1 + inbound_stream.bytes_pushed();
+    uint64_t next_abs_seqno =  1 + inbound_stream.bytes_pushed();
     
     // Add 1 more if the stream is closed (for FIN)
     if ( inbound_stream.is_closed() ) {
