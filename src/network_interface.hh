@@ -41,6 +41,25 @@ private:
   // IP (known as Internet-layer or network-layer) address of the interface
   Address ip_address_;
 
+  // ARP cache: maps IP address to (Ethernet address, timestamp)
+  std::unordered_map<uint32_t, std::pair<EthernetAddress, size_t>> arp_cache_;
+
+  // Pending ARP requests: maps IP address to timestamp of last request
+  std::unordered_map<uint32_t, size_t> pending_arp_requests_;
+
+  // Queue of Ethernet frames waiting to be sent
+  std::queue<EthernetFrame> frames_to_send_;
+
+  // Queue of datagrams waiting for ARP resolution: maps IP address to list of datagrams
+  std::unordered_map<uint32_t, std::queue<InternetDatagram>> pending_datagrams_;
+
+  // Current time in milliseconds
+  size_t current_time_ms_ = 0;
+
+  // Constants
+  static constexpr size_t ARP_CACHE_TIMEOUT_MS = 30000; // 30 seconds
+  static constexpr size_t ARP_REQUEST_TIMEOUT_MS = 5000; // 5 seconds
+
 public:
   // Construct a network interface with given Ethernet (network-access-layer) and IP (internet-layer)
   // addresses
