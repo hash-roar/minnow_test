@@ -4,6 +4,8 @@
 #include "tcp_receiver_message.hh"
 #include "tcp_sender_message.hh"
 
+#include <optional>
+
 class TCPReceiver
 {
 public:
@@ -15,4 +17,8 @@ public:
 
   /* The TCPReceiver sends TCPReceiverMessages back to the TCPSender. */
   TCPReceiverMessage send( const Writer& inbound_stream ) const;
+
+private:
+  // Track the initial sequence number (ISN) and whether it's been set
+  std::optional<Wrap32> isn_;
 };
